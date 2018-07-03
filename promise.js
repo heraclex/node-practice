@@ -22,14 +22,10 @@ class promiseExercise {
         const resolveStarred = (user) => {
             const startedUrl = `https://api.github.com/users/${user.login}/starred`;
             return getData(startedUrl).then((starred)=>{
-                fs.writeFile(`./${username}.json`, JSON.stringify(obj), (err) => {
-                    if (err) {
-                        cb(err);
-                    } else {
-                        cb(null, obj)
-                    }
-                });
+                
                 user.starred = starred;
+                fs.writeFile(`./${user.login}.json`, JSON.stringify(user));
+
                 return user;
             });
         };
