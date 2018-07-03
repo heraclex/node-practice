@@ -24,7 +24,14 @@ class promiseExercise {
             return getData(startedUrl).then((starred)=>{
                 
                 user.starred = starred;
-                fs.writeFile(`./${user.login}.json`, JSON.stringify(user));
+                fs.writeFile(`./${user.login}.json`, JSON.stringify(user), function(err) {
+                    if(err) {
+                        return console.log(err);
+                    }
+                
+                    console.log("The file was saved!");
+                });
+
 
                 return user;
             });
@@ -40,7 +47,7 @@ class promiseExercise {
             .then(resolveFollowers)
             .then(resolveFollowings)
             .then(resolveStarred)
-            .catch(onError);
+            //.catch(onError);
         });
     }
 }
@@ -49,7 +56,7 @@ module.exports = new promiseExercise();
 
 //*** private funciton ****//
 getData = (url) => {
-    const GITHUB_TOKEN = 'f5b6a9c5747ed5d155ec5273a2d2d34771b80374';
+    const GITHUB_TOKEN = '741cf4d240de4179a7326b8b41f73d9a9fefe6c1';
     const options = {
         uri: url,
         headers: {

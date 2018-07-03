@@ -8,4 +8,4 @@
 // app.run("countries.json");
 
 const promiseExercise = require("./promise")
-promiseExercise.getGithubProfile("vophihungvn");
+promiseExercise.getGithubProfile("heraclex");
