@@ -3,7 +3,7 @@ const dataProcessor = require('./data-processor')
 const EventEmitter = require('events')
 
 class countryEmitter extends EventEmitter {
-  run(fileName) {
+  readdata(fileName) {
     console.log("app start");
     
     // read file async
