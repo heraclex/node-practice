@@ -3,15 +3,6 @@ const fs = require('fs');
 
 class promiseExercise {
     getGithubProfile(username){
-        // get github profile
-        //let obj = {}
-
-        const resolveUser = (user) => {
-            return new Promise((resolve, reject) => {
-                if (err) reject(err);
-                else resolve(user);
-            });
-        };
 
         const resolveFollowers = (user) => {
             return getData(user.followers_url).then((followers)=>{
