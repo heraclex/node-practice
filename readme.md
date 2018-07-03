@@ -1,5 +1,5 @@
-# node package practice
-## Usage:
-```javascript
-npm install eric-black-package
+# Installation
+## Using npm:
+```batch
+$ npm install eric-black-package
 
