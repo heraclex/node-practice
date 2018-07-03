@@ -2,7 +2,7 @@
 ## installation with npm:
 ```batch
 $ npm install eric-black-package
-
+```
 ## using
 ```javascript
 const app = require("eric-black-package");
@@ -12,4 +12,4 @@ app.on('countrydata', (data) => {
   })
 
 app.readdata(".path/filename");
-
+```
