@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "bson-ext": "^2.0.0",
-    "mongodb": "^3.1.1"
+    "express": "^4.16.3",
+    "mongodb": "^3.1.1",
+    "mongoose": "^5.2.7"
   }
 }
