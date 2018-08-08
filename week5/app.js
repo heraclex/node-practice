@@ -1,43 +1,59 @@
 const express = require("express");
 const app = express();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+const PubSub = require("pubsub-js");
+
 const bodyParser = require("body-parser");
-const path = require("path");
+const mongoose = require("mongoose");
+
+// Setup db connection
+mongoose.connect("mongodb://localhost/nodejs_course");
+mongoose.Promise = Promise;
 
 app.use(bodyParser());
+app.use(require("./routes/index"));
+app.use(express.static(__dirname + "/css"));
+app.use(express.static(__dirname + "/scripts"));
 
-//app.use(require("./routes/index"));
-
-app.listen(3000, () => {
-  console.log("app start");
-});
-
-app.use(express.static(path.join(__dirname, "css")));
-
-//assuming app is express Object.
 app.get("/", function(req, res) {
-  // start send file
-  console.log("start send file");
-  res.sendFile(path.join(__dirname + "/index.html"));
+  res.sendFile(__dirname + "/index.html");
 });
 
-/*const mongoClient = require("mongodb").MongoClient;
-const url = "mongodb://localhost:27017";
-const dbName = "nodejsCourse";
-
-mongoClient.connect(
-  url,
-  { useNewUrlParser: true },
-  function(err, client) {
-    if (err) console.log(err);
-    const db = client.db(dbName);
-    console.log("Connected Successfull");
-
-    //const collection =
-  }
-);
-
-function connection(db, name, callback) {
-  const collection = db.createCollection(name, function(err, results) {
-    callback(results);
+io.on("connection", function(client) {
+  console.log("a user connected");
+  client.on("disconnect", function() {
+    console.log("user disconnected");
   });
-}*/
+
+  client.on("join", function(data) {
+    console.log(data);
+    client.emit("messages", "Hello from server");
+  });
+
+  PubSub.subscribe("searching.localDb", searchingLocalDb_Subscriber);
+  PubSub.subscribe("searching.gitAPI", searchingGitApi_Subscriber);
+
+  function searchingLocalDb_Subscriber(msg, data) {
+    if (data == null) {
+      client.emit(
+        "messages",
+        "No data found on local db. Start looking at Git API"
+      );
+    }
+  }
+
+  function searchingGitApi_Subscriber(msg, data) {
+    if (data == null) {
+      client.emit(
+        "messages",
+        "No data found on local db. Start looking at Git API"
+      );
+    }
+  }
+});
+
+// Start Server app which wrapped the express app inside
+server.listen(3000, () => {
+  console.log("server start, listening on *:3000");
+});
