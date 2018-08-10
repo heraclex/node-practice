@@ -1,8 +1,14 @@
 var router = require("express").Router();
 
 const middleware = (req, res, next) => {
-  console.log("I'm middleware!");
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
+  console.log("I'm middleware!");
+  //next();
 };
 
 router.use("/api", [middleware]);
