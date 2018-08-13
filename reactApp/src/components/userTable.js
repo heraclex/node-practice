@@ -2,37 +2,19 @@ import React from "react";
 import { Table } from "reactstrap";
 
 export default class UserTable extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      userRows: []
-    };
-  }
-
-  componentDidMount() {
-    var apiUrl = "http://localhost:3000/api/users/";
-    fetch(apiUrl)
-      .then(results => {
-        return results.json();
-      })
-      .then(data => {
-        let userRows = data.map(user => {
-          return (
-            <tr>
-              <th scope="row">{user.username}</th>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.url}</td>
-              <td>{user.location}</td>
-            </tr>
-          );
-        });
-
-        this.setState({ userRows: userRows });
-        console.log("state", this.state.userRows);
-      });
-  }
   render() {
+    let userRows = this.props.data.map((user, i) => {
+      return (
+        <tr key={i}>
+          <th scope="row">{user.username}</th>
+          <td>{user.name}</td>
+          <td>{user.email}</td>
+          <td>{user.url}</td>
+          <td>{user.location}</td>
+        </tr>
+      );
+    });
+
     return (
       <Table bordered hover>
         <thead>
@@ -44,7 +26,7 @@ export default class UserTable extends React.Component {
             <th scope="col">Location</th>
           </tr>
         </thead>
-        <tbody>{this.state.userRows}</tbody>
+        <tbody>{userRows}</tbody>
       </Table>
     );
   }

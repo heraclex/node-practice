@@ -36,10 +36,11 @@ router.get("/users/:username", async (req, res) => {
           rawData: data
         });
 
-        user.save();
+        //user.save();
+        console.log(user);
         res.send(user);
       }
-    });
+    })
   } else {
     res.send(users[0]);
   }

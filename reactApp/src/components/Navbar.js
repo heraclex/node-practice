@@ -30,6 +30,8 @@ export default class NavBar extends React.Component {
   }
 
   render() {
+
+    console.log('PROPS', this.props)
     return (
       <Navbar color="dark" dark expand="md">
         <NavbarBrand href="#">
@@ -64,7 +66,7 @@ export default class NavBar extends React.Component {
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-          <UserSearchBar />
+          <UserSearchBar onSearchReturn={this.props.onSearchReturn} />
         </Collapse>
       </Navbar>
     );
