@@ -21,11 +21,15 @@ class App extends React.Component {
 
   updateUsersList(newUser) {
     if (newUser != null
-      && newUser != undefined
-      && !this.state.users.includes(newUser)) {
-      let users = this.state.users;
-      users.push(newUser);
-      this.setState({ users: users });
+      && newUser != undefined) {
+      let existed = this.state.users.find((user) => {
+        return user.username === newUser.username;
+      });
+      if (!existed) {
+        let users = this.state.users
+        users.push(newUser)
+        this.setState({ users: users })
+      }
     }
   }
 

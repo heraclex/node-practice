@@ -3,8 +3,6 @@ const router = require("express").Router();
 const githubHelper = require("../../helpers/githubHelper");
 const PubSub = require("pubsub-js");
 const User = require("../../models/user");
-const Post = require("../../models/post");
-const Comment = require("../../models/comment");
 
 router.get("/users", async (req, res) => {
   const users = await User.find();
@@ -12,8 +10,8 @@ router.get("/users", async (req, res) => {
 });
 
 router.get("/users/:username", async (req, res) => {
+  console.log(`Received request with username: ${req.params.username}`);
   let username = req.params.username;
-  console.log(`Received request with username: ${username}`);
 
   const users = await User.find({ username: username })
     .limit(1)
@@ -22,7 +20,7 @@ router.get("/users/:username", async (req, res) => {
     PubSub.publish("searching.localDb", null);
     // inquiry to git api
     githubHelper.get(username).then(data => {
-      if (data == null || data.length === 0) {
+      if (!data) {
         PubSub.publish("searching.gitAPI", null);
         res.send(null);
       } else {
@@ -36,8 +34,6 @@ router.get("/users/:username", async (req, res) => {
           rawData: data
         });
 
-        //user.save();
-        console.log(user);
         res.send(user);
       }
     })

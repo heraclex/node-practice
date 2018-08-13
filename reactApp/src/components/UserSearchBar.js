@@ -11,25 +11,21 @@ export default class UserSearchBar extends React.Component {
   }
 
   onSearchBarChange(event) {
-    console.log(event.target.value);
     this.setState({
       query: event.target.value
     });
   }
 
   onSearchBtnClick(event) {
-    console.log(this);
     if (this.state.query.length > 3) {
       ApiHelper.getUser(this.state.query).then(data => {
-        console.log(`data:  ${data}`);
-        console.log(this.props);
+        console.log("data:", data);
         this.props.onSearchReturn(data);
       })
     }
   }
 
   render() {
-    console.log('PROPS', this.props)
     return (
       <Form inline>
         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">

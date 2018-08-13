@@ -12,6 +12,12 @@ class githubHelper {
         getData(followingURL),
         getData(starURL)
       ]);
+      // NO DATA found from GitHub
+      console.log("userData.id", userData.id);
+      if (!userData.id) {
+        console.log("No data found on GitHub with username:", username);
+        return null;
+      }
       userData.followings = followings;
       userData.starred = starred;
       userData.followers = await getData(userData.followers_url);
@@ -36,8 +42,8 @@ function getData(url) {
     }
   };
 
-  return new Promise(function(resolve, reject) {
-    request.get(options, function(err, resp, body) {
+  return new Promise(function (resolve, reject) {
+    request.get(options, function (err, resp, body) {
       if (err) {
         reject(err);
       } else {
