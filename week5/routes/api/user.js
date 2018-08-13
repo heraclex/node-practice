@@ -10,7 +10,7 @@ router.get("/users", async (req, res) => {
 });
 
 router.get("/users/:username", async (req, res) => {
-  console.log(`Received request with username: ${req.params.username}`);
+  console.log(`Received 'GET' request with username: ${req.params.username}`);
   let username = req.params.username;
 
   const users = await User.find({ username: username })
@@ -44,32 +44,43 @@ router.get("/users/:username", async (req, res) => {
 
 // only available if local data is available
 router.post("/users/:username", async (req, res) => {
-  let username = req.params.username;
-  let userdata = req.body.userdata;
-  console.log(req.body);
+  //throw new Exception("Not implemented");
+  // let username = req.params.username;
+  // let userdata = req.body.userdata;
 
-  console.log(`Received request with username: ${username}`);
+  // console.log(`Received request with username: ${username}`);
 
-  let user = await dataHelper.getUser(username);
-  if (user === null) {
-    res.status(500).jsonp({ error: "user not found" });
-  } else {
-    dataHelper.update(username, userdata).then(
-      isSuccess => {
-        if (isSuccess)
-          res.status(200).jsonp({ mess: `user: ${username} has been updated` });
-      },
-      err => {
-        res.status(500).jsonp({ error: err });
-      }
-    );
-  }
+  // let user = await dataHelper.getUser(username);
+  // if (user === null) {
+  //   res.status(500).jsonp({ error: "user not found" });
+  // } else {
+  //   dataHelper.update(username, userdata).then(
+  //     isSuccess => {
+  //       if (isSuccess)
+  //         res.status(200).jsonp({ mess: `user: ${username} has been updated` });
+  //     },
+  //     err => {
+  //       res.status(500).jsonp({ error: err });
+  //     }
+  //   );
+  // }
 });
 
-router.get("/users", (req, res) => {
-  dataHelper.getAllUsers().then(users => {
-    res.send(users);
-  });
+router.delete('/users/:id', async (req, res) => {
+  console.log(`Received 'DELETE' request with userId: ${req.params.id}`);
+  let userId = req.params.id;
+
+  const users = await User.find({ _id: userId })
+    .limit(1)
+    .skip(0);
+
+  if (users === null || users.length === 0) {
+    res.status(400);
+    res.send("User Not Found!!!")
+  } else {
+    const results = await User.remove({ _id: userId });
+    res.send(results);
+  }
 });
 
 module.exports = router;

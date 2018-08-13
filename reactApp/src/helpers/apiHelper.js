@@ -14,4 +14,12 @@ export default new class ApiHelper {
       return results.json();
     });
   }
+
+  removeUser(username) {
+    return fetch(this.apiUrl + "/users/" + username, {
+      method: 'delete'
+    }).then(results => {
+      return results.json();
+    });
+  }
 }();
