@@ -20,8 +20,9 @@ const middleware = (req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-
-  next();
+  setTimeout(async () => {
+    next();
+  }, 1000);
 };
 
 router.use("/api", [decodeURI, middleware]);

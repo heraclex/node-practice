@@ -10,8 +10,11 @@ export default new class ApiHelper {
 
   getUser(username) {
     return fetch(this.apiUrl + "/users/" + username).then(results => {
-      console.log("results from search ", results);
-      return results.json();
+      if (results.status !== 404) {
+        console.log("results from search ", results);
+        return results.json();
+      }
+      return null;
     });
   }
 

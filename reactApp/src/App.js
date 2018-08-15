@@ -7,15 +7,25 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      users: []
+      users: [],
+      isLoadingData: false
     };
   }
 
   // get data once component is ready on DOM
   componentDidMount() {
+    this.loadDataSource();
+  }
+
+  loadDataSource() {
+    this.setState({ isLoadingData: true });
     ApiHelper.getUsers().then(data => {
-      this.setState({ users: data });
-      console.log("app users", this.state.users);
+      this.setState({
+        users: data,
+        isLoadingData: false
+      });
+
+      console.log("list user avaialale in DB:", this.state.users);
     });
   }
 
@@ -40,7 +50,10 @@ class App extends React.Component {
         <main role="main" className="container">
           <div className="starter-template">
             <h1>My React App!</h1>
-            <UserTable data={this.state.users} />
+            <UserTable
+              data={this.state.users}
+              isLoadingData={this.state.isLoadingData}
+              refreshDataSource={this.loadDataSource.bind(this)} />
           </div>
         </main>
       </div>

@@ -20,12 +20,13 @@ router.get("/users/:username", async (req, res) => {
     PubSub.publish("searching.localDb", null);
     // inquiry to git api
     githubHelper.get(username).then(data => {
+      let user = null;
       if (!data) {
         PubSub.publish("searching.gitAPI", null);
-        res.send(null);
+        res.status(404);
       } else {
         // storing local
-        const user = new User({
+        user = new User({
           username: data.login,
           url: data.url,
           email: data.email,
@@ -33,17 +34,23 @@ router.get("/users/:username", async (req, res) => {
           location: data.location,
           rawData: data
         });
-
-        res.send(user);
+        user.save();
       }
+
+      res.send(user);
     })
   } else {
     res.send(users[0]);
   }
 });
 
-// only available if local data is available
 router.post("/users/:username", async (req, res) => {
+  res.status(400);
+  req.send();
+})
+
+// only available if local data is available
+router.put("/users/:username", async (req, res) => {
   //throw new Exception("Not implemented");
   // let username = req.params.username;
   // let userdata = req.body.userdata;
@@ -73,7 +80,6 @@ router.delete('/users/:id', async (req, res) => {
   const users = await User.find({ _id: userId })
     .limit(1)
     .skip(0);
-
   if (users === null || users.length === 0) {
     res.status(400);
     res.send("User Not Found!!!")
@@ -81,6 +87,7 @@ router.delete('/users/:id', async (req, res) => {
     const results = await User.remove({ _id: userId });
     res.send(results);
   }
+
 });
 
 module.exports = router;
