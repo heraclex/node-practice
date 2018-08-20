@@ -1,24 +1,25 @@
 import React from "react";
+//import { Button, Form, FormGroup, Input, Modal, ModalHeader, ModalBody, ModalFooter } from "../../../../../Library/Caches/typescript/2.9/node_modules/@types/reactstrap";
 import { Button, Form, FormGroup, Input, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import ApiHelper from "../helpers/apiHelper";
+import MessageModal from "./modals/MessageModal"
 
 export default class UserSearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false,
+      showNotFoundMessage: false,
+      noUserFoundOnGitMess: "No user found",
       searchText: "",
-      btnSearchInnerHtml: "Search"
+      btnSearchInnerHtml: "Search",
     };
     this.onSearchBtnClick = this.onSearchBtnClick.bind(this);
-    this.modalToggle = this.modalToggle.bind(this);
+
+    this.MessageModal = React.createRef();
   }
-  modalToggle() {
-    this.setState({
-      modal: !this.state.modal
-    });
-  }
+
   onSearchBtnClick(event) {
+    event.preventDefault();
     if (this.state.searchText.length > 3) {
       this.setState({ btnSearchInnerHtml: (<div className='loader'></div>) });
       ApiHelper.getUser(this.state.searchText).then(data => {
@@ -26,8 +27,9 @@ export default class UserSearchBar extends React.Component {
           console.log("data return from SearchBar:", data);
           this.props.onSearchReturn(data);
         } else {
-          // show error message
-          this.modalToggle();
+          // show message 'User NOt Found in GitHub'
+          this.MessageModal.setMessage(`No account found on GitHub with user ${this.state.searchText}`);
+          this.MessageModal.toggle();
         }
         this.setState({ searchText: "", btnSearchInnerHtml: "Search" });
       })
@@ -50,15 +52,7 @@ export default class UserSearchBar extends React.Component {
             {this.state.btnSearchInnerHtml}
           </Button>
         </Form>
-        <Modal isOpen={this.state.modal} toggle={this.modalToggle} className={this.props.className}>
-          <ModalHeader toggle={this.modalToggle}>OPP!</ModalHeader>
-          <ModalBody>
-            No Git User found
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.modalToggle}>OK</Button>
-          </ModalFooter>
-        </Modal>
+        <MessageModal ref={(instance) => { this.MessageModal = instance; }} />
       </div>
     );
   }

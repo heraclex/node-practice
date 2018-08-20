@@ -1,7 +1,9 @@
 export default new class ApiHelper {
+
   constructor() {
-    this.apiUrl = "http://localhost:3000/api";
+    this.apiUrl = "http://localhost:3000/api/v1";
   }
+
   getUsers() {
     return fetch(this.apiUrl + "/users").then(results => {
       return results.json();
@@ -25,4 +27,5 @@ export default new class ApiHelper {
       return results.json();
     });
   }
+
 }();

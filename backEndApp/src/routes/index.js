@@ -1,9 +1,12 @@
 var router = require("express").Router();
 
-const decodeURI = (req, res, next) => {
-  console.log("trying to decode params...");
+const detectInvalidUrl = (req, res, next) => {
   try {
-    decodeURIComponent(req.path);
+    console.log(`\n`)
+    console.log(`Received "${req.method}" with url ${req.originalUrl} `)
+    console.log(`Params:`, req.params)
+    // trying to decodeURI
+    decodeURIComponent(req.path)
     next();
   }
   catch (err) {
@@ -26,7 +29,7 @@ const middleware = (req, res, next) => {
   }, 1000);
 };
 
-router.use("/api", [decodeURI, middleware]);
-router.use("/api", require("./api/user"));
+router.use("/api/v1", [detectInvalidUrl, middleware]);
+router.use("/api/v1", require("./route.user"));
 
 module.exports = router;

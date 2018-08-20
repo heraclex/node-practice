@@ -1,0 +1,25 @@
+{
+  "name": "week5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bson-ext": "^2.0.0",
+    "compression": "^1.7.3",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "mongodb": "^3.1.1",
+    "mongoose": "^5.2.7",
+    "nodemon": "^1.18.3",
+    "pubsub-js": "^1.6.0",
+    "request": "^2.87.0",
+    "socket.io": "^2.1.1"
+  }
+}
