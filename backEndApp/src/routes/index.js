@@ -3,8 +3,7 @@ var router = require("express").Router();
 const detectInvalidUrl = (req, res, next) => {
   try {
     console.log(`\n`)
-    console.log(`Received "${req.method}" with url ${req.originalUrl} `)
-    console.log(`Params:`, req.params)
+    console.log(`Received "${req.method}" with url ${req.originalUrl} at => ${Date.now()}`)
     // trying to decodeURI
     decodeURIComponent(req.path)
     next();

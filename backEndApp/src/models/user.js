@@ -5,6 +5,7 @@ const User = mongoose.model("user", {
     type: String,
     required: true
   },
+  avatarUrl: String,
   url: String,
   email: String,
   name: String,

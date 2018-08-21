@@ -1,13 +1,15 @@
 import React from "react";
 import { Table, Button } from "reactstrap";
-import ApiHelper from "../helpers/apiHelper";
+import userService from "../services/user.service";
 import "../css/loader.css";
+import UserAvata from "./UserAvata";
 export default class UserTable extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      isDeleting: false
+      isDeleting: false,
+      popovers: []
     };
 
     this.onDeleteUserClick = this.onDeleteUserClick.bind(this);
@@ -20,12 +22,22 @@ export default class UserTable extends React.Component {
       var loaderElement = event.target.getElementsByTagName('div')[0];
       trashElement.style.display = 'none';
       loaderElement.style.display = 'block';
-      ApiHelper.removeUser(userId).then(data => {
+      userService.removeUser(userId).then(response => {
         trashElement.style.display = 'block';
         loaderElement.style.display = 'none';
-        console.log("REMOVE user response data:", data);
+        console.log("Response on DELETE request:", response);
         this.props.refreshDataSource();
       })
+    }
+  }
+
+  showUserAvatar(userId, avatarUrl) {
+    let avatar = this.state.popovers.find((p) => {
+      return p.id === userId;
+    });
+    if (avatar && avatar.popover) {
+      avatar.popover.setAvatarUrl(avatarUrl);
+      avatar.popover.toggle();
     }
   }
 
@@ -37,13 +49,20 @@ export default class UserTable extends React.Component {
       this.props.data.map((user, i) => {
         return (
           <tr key={i}>
-            <th scope="row">{user.username}</th>
+            <td scope="row">
+              <Button key={'user-name-' + i} color="link" id={'avatar-' + user._id}
+                onClick={(e) => { this.showUserAvatar(user._id, user.avatarUrl); }}>
+                {user.username}
+              </Button>
+              <UserAvata username={user.username} key={'user-avatar-' + i} target={'avatar-' + user._id}
+                ref={(instance) => { this.state.popovers.push({ id: user._id, popover: instance }) }} />
+            </td>
             <td>{user.name}</td>
             <td>{user.email}</td>
             <td>{user.url}</td>
             <td>{user.location}</td>
             <td>
-              <Button key={user._id} outline color="danger" user-id={user._id} onClick={this.onDeleteUserClick}>
+              <Button key={'delete-user-btn' + i} outline color="danger" user-id={user._id} onClick={this.onDeleteUserClick}>
                 <i className='far fa-trash-alt' style={{ display: 'block' }}></i>
                 <div className='loader' style={{ display: 'none' }}></div>
               </Button>

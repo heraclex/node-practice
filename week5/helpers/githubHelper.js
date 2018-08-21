@@ -1,4 +1,4 @@
-const request = require("request");
+const request = require("../../../../Library/Caches/typescript/2.9/node_modules/@types/request");
 
 class githubHelper {
   async get(username) {

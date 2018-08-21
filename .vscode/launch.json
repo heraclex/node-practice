@@ -7,8 +7,14 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/week4/helpers/githubApiHelper.js"
+            "name": "Launch BackEnd Program",
+            "program": "${workspaceFolder}/backEndApp/",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "debug"
+            ],
+            "port": 9229
         }
     ]
 }

@@ -20,6 +20,8 @@ app.use(bodyParser());
 
 /* route-api configuration */
 app.use(require("./src/routes/index"));
+app.use("/public", express.static(__dirname + '/public'));
+
 
 io.on("connection", function (client) {
   console.log("a user connected");

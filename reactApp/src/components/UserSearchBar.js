@@ -1,7 +1,7 @@
 import React from "react";
 //import { Button, Form, FormGroup, Input, Modal, ModalHeader, ModalBody, ModalFooter } from "../../../../../Library/Caches/typescript/2.9/node_modules/@types/reactstrap";
-import { Button, Form, FormGroup, Input, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import ApiHelper from "../helpers/apiHelper";
+import { Button, Form, FormGroup, Input } from "reactstrap";
+import userService from "../services/user.service";
 import MessageModal from "./modals/MessageModal"
 
 export default class UserSearchBar extends React.Component {
@@ -22,7 +22,7 @@ export default class UserSearchBar extends React.Component {
     event.preventDefault();
     if (this.state.searchText.length > 3) {
       this.setState({ btnSearchInnerHtml: (<div className='loader'></div>) });
-      ApiHelper.getUser(this.state.searchText).then(data => {
+      userService.getUser(this.state.searchText).then(data => {
         if (data) {
           console.log("data return from SearchBar:", data);
           this.props.onSearchReturn(data);

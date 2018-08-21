@@ -1,4 +1,4 @@
-var router = require("express").Router();
+var router = require("../../../../Library/Caches/typescript/2.9/node_modules/@types/express").Router();
 
 const decodeURI = (req, res, next) => {
   console.log("trying to decode params...");
@@ -30,3 +30,4 @@ router.use("/api", [decodeURI, middleware]);
 router.use("/api", require("./api/user"));
 
 module.exports = router;
+
