@@ -1,7 +1,7 @@
 import React from "react";
 import NavBar from "./components/Navbar";
 import UserTable from "./components/UserTable";
-import ApiHelper from "./helpers/apiHelper";
+import userService from "./services/user.service";
 
 class App extends React.Component {
   constructor() {
@@ -19,7 +19,7 @@ class App extends React.Component {
 
   loadDataSource() {
     this.setState({ isLoadingData: true });
-    ApiHelper.getUsers().then(data => {
+    userService.getUsers().then(data => {
       this.setState({
         users: data,
         isLoadingData: false

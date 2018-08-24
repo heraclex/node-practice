@@ -13,6 +13,8 @@ export default class UserTable extends React.Component {
     };
 
     this.onDeleteUserClick = this.onDeleteUserClick.bind(this);
+    this.removeUserAvatarPopover = this.removeUserAvatarPopover.bind(this);
+    this.addUserAvatarPopover = this.addUserAvatarPopover.bind(this);
   }
 
   onDeleteUserClick(event) {
@@ -26,6 +28,8 @@ export default class UserTable extends React.Component {
         trashElement.style.display = 'block';
         loaderElement.style.display = 'none';
         console.log("Response on DELETE request:", response);
+
+        this.removeUserAvatarPopover(userId);
         this.props.refreshDataSource();
       })
     }
@@ -38,6 +42,22 @@ export default class UserTable extends React.Component {
     if (avatar && avatar.popover) {
       avatar.popover.setAvatarUrl(avatarUrl);
       avatar.popover.toggle();
+    }
+  }
+
+  removeUserAvatarPopover(userId) {
+    let popovers = this.state.popovers;
+    let index = popovers.findIndex(x => x.id === userId);
+    if (index !== -1) {
+      popovers.splice(index, 1);
+      this.setState({ popovers: popovers });
+    }
+  }
+
+  addUserAvatarPopover(newPopover) {
+    let index = this.state.popovers.findIndex(x => x.id === newPopover.id);
+    if (index < 0 && newPopover.popover) {
+      this.state.popovers.push(newPopover);
     }
   }
 
@@ -55,7 +75,7 @@ export default class UserTable extends React.Component {
                 {user.username}
               </Button>
               <UserAvata username={user.username} key={'user-avatar-' + i} target={'avatar-' + user._id}
-                ref={(instance) => { this.state.popovers.push({ id: user._id, popover: instance }) }} />
+                ref={(instance) => { this.addUserAvatarPopover({ id: user._id, popover: instance }) }} />
             </td>
             <td>{user.name}</td>
             <td>{user.email}</td>

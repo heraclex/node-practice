@@ -6,12 +6,12 @@ export default class UserAvata extends React.Component {
 
     constructor(props) {
         super(props);
-        this.toggle = this.toggle.bind(this);
-        this.onDrop = this.onDrop.bind(this);
         this.state = {
             popoverOpen: false,
             avatarUrl: null
         };
+        this.toggle = this.toggle.bind(this);
+        this.onDrop = this.onDrop.bind(this);
         this.setAvatarUrl = this.setAvatarUrl.bind(this);
     }
 
@@ -34,7 +34,6 @@ export default class UserAvata extends React.Component {
         this.setState({
             popoverOpen: !this.state.popoverOpen
         });
-        console.log(this.state.avatarUrl);
     }
 
     onDrop(acceptedFiles, rejectedFiles) {
@@ -47,8 +46,8 @@ export default class UserAvata extends React.Component {
 
     render() {
         return (
-            <Popover placement='right' isOpen={this.state.popoverOpen} target={this.props.target} toggle={this.toggle}>
-                <PopoverHeader>Avatar</PopoverHeader>
+            <Popover placement='left' isOpen={this.state.popoverOpen} target={this.props.target} toggle={this.toggle}>
+                <PopoverHeader>{this.props.username}</PopoverHeader>
                 <PopoverBody>
                     <img style={{ display: this.state.avatarUrl ? 'block' : 'none' }}
                         src={this.state.avatarUrl} className="img-fluid rounded " alt="..." />
