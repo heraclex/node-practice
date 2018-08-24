@@ -16,6 +16,6 @@ router.post("/users/:username/avatar",
     upload.single('avatar'),
     userController.saveAvatarUrl);
 
-router.delete('users/:id', (req, res, next) => { console.log("xxxx"); next(); }, userController.deleteById);
+router.delete('/users/:id', userController.deleteById);
 
 module.exports = router;
