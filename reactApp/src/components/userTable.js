@@ -9,12 +9,12 @@ export default class UserTable extends React.Component {
     super(props);
     this.state = {
       isDeleting: false,
-      popovers: []
+      popovers: [],
+      currentOpenAvatar: -1
     };
 
     this.onDeleteUserClick = this.onDeleteUserClick.bind(this);
-    this.removeUserAvatarPopover = this.removeUserAvatarPopover.bind(this);
-    this.addUserAvatarPopover = this.addUserAvatarPopover.bind(this);
+    this.toggleAvatar = this.toggleAvatar.bind(this);
   }
 
   onDeleteUserClick(event) {
@@ -35,30 +35,10 @@ export default class UserTable extends React.Component {
     }
   }
 
-  showUserAvatar(userId, avatarUrl) {
-    let avatar = this.state.popovers.find((p) => {
-      return p.id === userId;
-    });
-    if (avatar && avatar.popover) {
-      avatar.popover.setAvatarUrl(avatarUrl);
-      avatar.popover.toggle();
-    }
-  }
-
-  removeUserAvatarPopover(userId) {
-    let popovers = this.state.popovers;
-    let index = popovers.findIndex(x => x.id === userId);
-    if (index !== -1) {
-      popovers.splice(index, 1);
-      this.setState({ popovers: popovers });
-    }
-  }
-
-  addUserAvatarPopover(newPopover) {
-    let index = this.state.popovers.findIndex(x => x.id === newPopover.id);
-    if (index < 0 && newPopover.popover) {
-      this.state.popovers.push(newPopover);
-    }
+  toggleAvatar(i) {
+    this.setState({
+      currentOpenAvatar: i
+    })
   }
 
   render() {
@@ -71,11 +51,14 @@ export default class UserTable extends React.Component {
           <tr key={i}>
             <td scope="row">
               <Button key={'user-name-' + i} color="link" id={'avatar-' + user._id}
-                onClick={(e) => { this.showUserAvatar(user._id, user.avatarUrl); }}>
+                onClick={(e) => this.toggleAvatar(i)}>
                 {user.username}
               </Button>
-              <UserAvata username={user.username} key={'user-avatar-' + i} target={'avatar-' + user._id}
-                ref={(instance) => { this.addUserAvatarPopover({ id: user._id, popover: instance }) }} />
+              {
+                this.state.currentOpenAvatar === i &&
+                <UserAvata onDismiss={() => this.toggleAvatar(-1)} avatarUrl={user.avatarUrl} username={user.username}
+                  key={'user-avatar-' + i} target={'avatar-' + user._id} />
+              }
             </td>
             <td>{user.name}</td>
             <td>{user.email}</td>

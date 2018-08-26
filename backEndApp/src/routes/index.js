@@ -24,8 +24,10 @@ const middleware = (req, res, next) => {
     next();
   }, 1000);
 };
-
+//define middleawre
 router.use("/api/v1", [detectInvalidUrl, middleware]);
-router.use("/api/v1", require("./route.user"));
+
+router.use("/api/v1/users", require("./route.user"));
+//router.use("/api/v1/contact", require("./route.contact"));
 
 module.exports = router;
